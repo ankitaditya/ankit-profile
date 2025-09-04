@@ -1,0 +1,9 @@
+services:
+  profile-app:
+    image: node:latest
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: bash -c "npm install && npm run dev"
+    ports:
+      - "5001:5001"   # map port if your app runs on 5001

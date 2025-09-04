@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Ankit Aditya — Interactive Resume</title>
+  <meta name="description" content="Interactive resume of Ankit Aditya — AI Engineer" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg: #0b0d10;
+      --panel: #12161c;
+      --muted: #9aa4b2;
+      --text: #e6ebf2;
+      --brand: #7c5cff;
+      --accent: #30d158;
+      --chip: #1b2230;
+      --border: #1e2533;
+      --shadow: 0 10px 30px rgba(0,0,0,.25);
+    }
+    .light:root, .light body{
+      --bg: #f7f9fc;
+      --panel: #ffffff;
+      --muted: #5b646e;
+      --text: #0c1117;
+      --brand: #5b3df5;
+      --accent: #0ea5e9;
+      --chip: #f2f5fb;
+      --border: #e7ecf5;
+      --shadow: 0 8px 24px rgba(16,24,40,.08);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; background:var(--bg); color:var(--text);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      line-height:1.5;
+    }
+    a{color:var(--brand); text-decoration:none}
+    a:hover{text-decoration:underline}
+    .wrap{max-width:1100px; margin:24px auto; padding:0 16px;}
+    .grid{display:grid; grid-template-columns: 320px 1fr; gap:22px}
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+
+    /* Header Card */
+    .card{background:var(--panel); border:1px solid var(--border); border-radius:18px; box-shadow:var(--shadow)}
+    .header{position:sticky; top:12px; z-index:5}
+    .header .inner{display:flex; align-items:center; justify-content:space-between; padding:16px 18px}
+    .name{font-weight:800; letter-spacing:.2px; font-size:1.4rem}
+    .tag{display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px; background:linear-gradient(90deg,var(--brand),var(--accent)); color:white; font-weight:600; font-size:.82rem}
+    .controls{display:flex; gap:10px}
+    .btn{border:1px solid var(--border); background:var(--chip); padding:8px 12px; border-radius:12px; font-weight:600; cursor:pointer}
+    .btn:hover{filter:brightness(1.05)}
+
+    /* Left column */
+    .side{display:flex; flex-direction:column; gap:18px}
+    .side .card{padding:18px}
+    .h{font-size:.9rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); font-weight:700; margin-bottom:8px}
+    .contact a{display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:12px; background:var(--chip); border:1px solid var(--border)}
+    .contact a + a{margin-top:8px}
+    .chips{display:flex; flex-wrap:wrap; gap:8px}
+    .chip{background:var(--chip); border:1px solid var(--border); padding:8px 10px; border-radius:999px; font-weight:600; font-size:.9rem}
+    .filter{display:flex; gap:8px; margin:10px 0 2px}
+    .filter .btn.active{outline:2px solid var(--brand);}
+
+    /* Right column */
+    .main{display:flex; flex-direction:column; gap:18px}
+    .section{padding:20px 22px}
+    .section h2{margin:0 0 8px; font-size:1.05rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted)}
+    .summary p{margin:8px 0; font-size:1.05rem}
+    .highlight{border-left:4px solid var(--brand); padding-left:12px; margin-top:10px; font-weight:700}
+
+    /* Timeline */
+    .timeline{position:relative;}
+    .timeline::before{content:""; position:absolute; left:10px; top:0; bottom:0; width:2px; background:var(--border)}
+    .item{position:relative; padding-left:28px; margin:18px 0}
+    .dot{position:absolute; left:4px; top:6px; width:12px; height:12px; border-radius:50%; background:var(--brand)}
+    .role{display:flex; flex-wrap:wrap; align-items:center; gap:10px}
+    .role .title{font-weight:800}
+    .role .org{opacity:.9}
+    .meta{color:var(--muted); font-weight:600}
+    .bullets{margin:10px 0 0 0; padding-left:18px}
+    .bullets li{margin:8px 0}
+
+    /* Details accordion */
+    details{border:1px solid var(--border); border-radius:14px; overflow:hidden}
+    summary{list-style:none; cursor:pointer; padding:12px 14px; font-weight:700; background:var(--chip)}
+    summary::-webkit-details-marker{display:none}
+    details[open] summary{border-bottom:1px solid var(--border)}
+    .inside{padding:14px}
+
+    /* Footer */
+    .footer{padding:16px 22px; color:var(--muted); text-align:center}
+
+    /* Print */
+    @media print{
+      .header, .controls, .filter{display:none !important}
+      .wrap{margin:0; padding:0}
+      .card{box-shadow:none}
+      body{background:white}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="header card">
+      <div class="inner">
+        <div>
+          <div class="name">ANKIT ADITYA</div>
+          <div class="meta">#D/063, Meadows Vista, Morta – Near NH‑58, Ghaziabad, UP 201017</div>
+        </div>
+        <div class="controls">
+          <button class="btn" id="themeBtn" aria-label="Toggle theme">Toggle Theme</button>
+          <button class="btn" onclick="window.print()" aria-label="Print / Save as PDF">Save PDF</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Left column → contact + skills -->
+      <aside class="side">
+        <div class="card">
+          <div class="h">Contact</div>
+          <div class="contact">
+            <a href="tel:+918368601560" title="Call">
+              📞 <span>+91 83686 01560</span>
+            </a>
+            <a href="mailto:ankit.see@gmail.com" id="emailLink" title="Email">
+              ✉️ <span>ankit.see@gmail.com</span>
+            </a>
+            <a href="https://linkedin.com/in/adykits" target="_blank" rel="noreferrer noopener">
+              🔗 <span>linkedin.com/in/adykits</span>
+            </a>
+            <a href="https://github.com/ankitaditya" target="_blank" rel="noreferrer noopener">
+              🧑‍💻 <span>github.com/ankitaditya</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h">Core Skills</div>
+          <div class="filter">
+            <button class="btn active" data-skill-filter="all">All</button>
+            <button class="btn" data-skill-filter="ai">AI</button>
+            <button class="btn" data-skill-filter="cloud">Cloud</button>
+            <button class="btn" data-skill-filter="backend">Backend</button>
+            <button class="btn" data-skill-filter="security">Security</button>
+          </div>
+          <div class="chips" id="skills">
+            <span class="chip ai">LLM</span>
+            <span class="chip ai">Text‑to‑Speech</span>
+            <span class="chip ai">OCR</span>
+            <span class="chip ai">AI Agents</span>
+
+            <span class="chip backend">Python</span>
+            <span class="chip backend">Node.js</span>
+            <span class="chip backend">TypeScript</span>
+            <span class="chip backend">React</span>
+
+            <span class="chip cloud">AWS SageMaker</span>
+            <span class="chip cloud">Lambda</span>
+            <span class="chip cloud">DynamoDB</span>
+            <span class="chip cloud">S3</span>
+            <span class="chip cloud">Step Functions</span>
+            <span class="chip cloud">EC2</span>
+            <span class="chip cloud">ECS/EKS</span>
+            <span class="chip cloud">CloudWatch</span>
+            <span class="chip cloud">X‑Ray</span>
+            <span class="chip cloud">Prometheus</span>
+            <span class="chip cloud">Terraform</span>
+            <span class="chip cloud">CDK</span>
+
+            <span class="chip backend">PostgreSQL</span>
+            <span class="chip backend">Redis</span>
+            <span class="chip backend">OpenSearch</span>
+            <span class="chip backend">Elasticsearch</span>
+
+            <span class="chip security">Keycloak SSO</span>
+            <span class="chip security">OAuth2</span>
+            <span class="chip security">API Gateway</span>
+
+            <span class="chip backend">Docker</span>
+            <span class="chip backend">GitHub Actions</span>
+            <span class="chip backend">Jenkins</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="h">Quick Links</div>
+          <div class="chips">
+            <a class="chip" href="#summary">Summary</a>
+            <a class="chip" href="#experience">Experience</a>
+            <a class="chip" href="#achievements">Achievements</a>
+            <a class="chip" href="#leadership">Leadership</a>
+            <a class="chip" href="#education">Education</a>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Right column → main content -->
+      <main class="main">
+        <section class="section card summary" id="summary">
+          <h2>Summary</h2>
+          <p>Freelance AI Engineer with 5+ years of experience designing and deploying scalable, AI‑first systems in education, electric‑mobility, publishing, and surveillance. Proven expertise in serverless microservices, large‑language‑model orchestration, OCR/TTS pipelines, no‑code automation, and real‑time API delivery. Track record of launching developer‑first platforms that simplify AI adoption and deliver measurable business outcomes.</p>
+          <p class="highlight">Impact Highlight: Delivered AI solutions adopted by 20+ enterprise and startup clients, cutting cloud costs by up to 40% and driving 40% higher product adoption rates.</p>
+        </section>
+
+        <section class="section card" id="experience">
+          <h2>Professional Experience</h2>
+          <div class="timeline">
+            <div class="item">
+              <div class="dot" aria-hidden="true"></div>
+              <div class="role">
+                <div class="title">Freelancer — Artificial Intelligence</div>
+                <div class="org">New Delhi, India</div>
+              </div>
+              <div class="meta">Jan 2025 – Present</div>
+              <ul class="bullets">
+                <li>Delivered LLM, voice‑cloning, OCR, and inference pipelines as RESTful APIs; optimized model serving to reduce latency by 30%.</li>
+                <li>Implemented secure, role‑based and organization‑tiered access with Keycloak; achieved GDPR & SOC‑2 compliance.</li>
+                <li>Designed a no‑code automation builder (<span class="mono">workflow.i‑kalki.com</span>) enabling clients to visually chain AI services; drove 40% increase in client adoption.</li>
+                <li>Shipped AI narration studio for BuckAudio (<span class="mono">ai.buckaudio.com</span>) with personalized voice clones reaching 98% speaker similarity.</li>
+                <li>Launched production infrastructure on ECS/EKS using Terraform/CDK; integrated CloudWatch, X‑Ray, and Prometheus for 99.9% uptime.</li>
+                <li>Developed STQC‑ready live surveillance AI with video analytics and anomaly detection; cut false‑positive alerts by 25%.</li>
+              </ul>
+              <details>
+                <summary>Show tech stack</summary>
+                <div class="inside">Python, Node.js, TypeScript, FastAPI, Express, Docker, Terraform, AWS (SageMaker, Lambda, Step Functions, ECS/EKS), Keycloak, OpenSearch, Redis.</div>
+              </details>
+            </div>
+
+            <div class="item">
+              <div class="dot" aria-hidden="true"></div>
+              <div class="role">
+                <div class="title">Zenarate — Software Engineer III / I / Trainee</div>
+                <div class="org">Remote + Palo Alto, CA</div>
+              </div>
+              <div class="meta">May 2021 – Jun 2024</div>
+              <ul class="bullets">
+                <li>Built sub‑100ms latency NLP simulators via WebSockets; increased real‑time engagement by 20%.</li>
+                <li>Architected microservices using AWS Lambda + Step Functions; reduced infrastructure spend by 40% and improved reliability.</li>
+                <li>Optimized React frontends with code‑splitting; lowered TTI by 35% and raised Lighthouse scores.</li>
+                <li>Implemented CI pipelines with contract/integration tests; lowered release failures by 30%.</li>
+                <li>Developed Elasticsearch‑based feedback search with advanced filtering; adopted by 10+ enterprise clients for sub‑second queries.</li>
+              </ul>
+              <details>
+                <summary>Show tech stack</summary>
+                <div class="inside">React, TypeScript, WebSockets, Lambda, Step Functions, Elasticsearch, Jenkins, GitHub Actions.</div>
+              </details>
+            </div>
+
+            <div class="item">
+              <div class="dot" aria-hidden="true"></div>
+              <div class="role">
+                <div class="title">Drone Power Pvt. Ltd. — IoT Software Intern</div>
+                <div class="org">New Delhi, India</div>
+              </div>
+              <div class="meta">Sep 2020 – Dec 2020</div>
+              <ul class="bullets">
+                <li>Created OCPP‑based charger control APIs with MQTT/WebSocket telemetry; improved telemetry accuracy by 15%.</li>
+                <li>Deployed monitoring dashboards for EV infrastructure using Flask, React, and DynamoDB; enabled 24‑hour monitoring.</li>
+                <li>Built OTA firmware‑update toolchain for IoT devices; reduced device downtime by 18%.</li>
+              </ul>
+              <details>
+                <summary>Show tech stack</summary>
+                <div class="inside">Python, Flask, React, DynamoDB, MQTT, WebSocket, OCPP, OTA.</div>
+              </details>
+            </div>
+          </div>
+        </section>
+
+        <section class="section card" id="achievements">
+          <h2>Achievements & Results</h2>
+          <ul class="bullets">
+            <li>Reduced critical bug resolution time by 40% through cross‑functional leadership and rapid fixes, saving an estimated <strong>500+ engineering hours annually</strong>.</li>
+            <li>Increased user NPS by 25% via customer‑centric product changes, contributing to <strong>20% higher client renewals</strong>.</li>
+            <li>Delivered AI solutions enabling <strong>30% cloud cost savings</strong> for enterprise clients and generating <strong>10,000+ MAUs</strong> across platforms.</li>
+          </ul>
+        </section>
+
+        <section class="section card" id="leadership">
+          <h2>Leadership Experience</h2>
+          <ul class="bullets">
+            <li>Led a cross‑functional team of 15 engineers, designers, and QA; delivered <strong>3 enterprise mobile apps</strong> on schedule, cutting development cycles by <strong>20%</strong> and improving delivery predictability.</li>
+            <li>Coordinated sprints across time zones (India ↔ US), achieving <strong>95% on‑time delivery</strong> for critical features.</li>
+          </ul>
+        </section>
+
+        <section class="section card" id="education">
+          <h2>Education</h2>
+          <p><strong>B.Tech, Computer Science & Engineering</strong> — Dr. K.N. Modi Institute of Engineering & Technology, Modinagar<br/>
+          2016 – 2020 | CGPA 7.6/10</p>
+        </section>
+
+        <div class="footer">© <span id="year"></span> Ankit Aditya • Built with HTML/CSS/JS • Accessible, print‑ready, and ATS‑friendly</div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Theme toggle (persisted)
+    const root = document.documentElement;
+    const themeBtn = document.getElementById('themeBtn');
+    const saved = localStorage.getItem('theme');
+    if(saved === 'light'){ document.documentElement.classList.add('light'); }
+    themeBtn?.addEventListener('click', () => {
+      document.documentElement.classList.toggle('light');
+      localStorage.setItem('theme', document.documentElement.classList.contains('light') ? 'light' : 'dark');
+    });
+
+    // Skills filter
+    const filterBtns = document.querySelectorAll('[data-skill-filter]');
+    const chips = document.querySelectorAll('#skills .chip');
+    filterBtns.forEach(btn => btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const tag = btn.getAttribute('data-skill-filter');
+      chips.forEach(chip => {
+        chip.style.display = (tag === 'all' || chip.classList.contains(tag)) ? 'inline-flex' : 'none';
+      });
+    }));
+
+    // Copy email on click
+    const email = document.getElementById('emailLink');
+    email?.addEventListener('click', (e) => {
+      const addr = 'ankit.see@gmail.com';
+      navigator.clipboard?.writeText(addr);
+      email.querySelector('span').textContent = addr + ' (copied)';
+      setTimeout(()=> email.querySelector('span').textContent = addr, 1600);
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+  <style>
+    .mono{font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace}
+  </style>
+</body>
+</html>
