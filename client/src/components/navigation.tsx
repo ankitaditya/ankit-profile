@@ -29,7 +29,6 @@ export default function Navigation() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center space-x-4">
-            <img src={logo} height="20px" width="20px" />
             <h1 className="text-xl font-bold tracking-tight gradient-text" data-testid="nav-title">
               Ankit Aditya
             </h1>
