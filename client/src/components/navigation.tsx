@@ -71,7 +71,9 @@ export default function Navigation() {
             >
               {theme === "light" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button onClick={handlePrint} data-testid="button-pdf">
+            <Button onClick={()=>{
+              window.location.href = "https://drive.google.com/file/d/1VJCvRv-89BmbYjU7XgqjgZlDKyAQQ7xN/view?usp=sharing"
+            }} data-testid="button-pdf">
               <Download className="mr-2 h-4 w-4" />
               PDF
             </Button>
