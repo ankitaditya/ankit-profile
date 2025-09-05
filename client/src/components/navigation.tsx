@@ -29,6 +29,7 @@ export default function Navigation() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center space-x-4">
+            <img src={logo} height="20px" width="20px" />
             <h1 className="text-xl font-bold tracking-tight gradient-text" data-testid="nav-title">
               Ankit Aditya
             </h1>
@@ -70,7 +71,9 @@ export default function Navigation() {
             >
               {theme === "light" ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
             </Button>
-            <Button onClick={handlePrint} data-testid="button-pdf">
+            <Button onClick={()=>{
+              window.location.href = "https://drive.google.com/file/d/1VJCvRv-89BmbYjU7XgqjgZlDKyAQQ7xN/view?usp=sharing"
+            }} data-testid="button-pdf">
               <Download className="mr-2 h-4 w-4" />
               PDF
             </Button>
